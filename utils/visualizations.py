@@ -36,37 +36,46 @@ def add_spectrogram(spectrogram, axis, title, hop_length, sample_rate):
     return add_db(db, axis, title, hop_length, sample_rate)
 
 
-def visualize_fgnd(fgnd_after_mask, mask, margin, hop_length, sample_rate):
-    fig, ax = plt.subplots(nrows=3, sharex=True, figsize=(20, 10))
+def visualize_mix(mixture, fgnd_after_mask, mask, margin, hop_length, sample_rate):
+    fig, ax = plt.subplots(nrows=4, sharex=True, figsize=(20, 13))
 
     colorbar = add_spectrogram(
-        fgnd_after_mask,
+        mixture,
         ax[0],
-        "Foreground sound after masking",
+        "Mixture",
         hop_length,
         sample_rate,
     )
     fig.colorbar(colorbar, ax=ax[0], fraction=0.05)
 
-    mask = mask * 100 - 80
-    _ = add_db(
-        mask,
+    colorbar = add_spectrogram(
+        fgnd_after_mask,
         ax[1],
-        "Processed binary mask from foreground sound after masking",
+        "Foreground sound extracted using perfect mask",
         hop_length,
         sample_rate,
     )
     fig.colorbar(colorbar, ax=ax[1], fraction=0.05)
 
-    margin = margin * 100 - 80
+    mask = mask * 100 - 80
     _ = add_db(
-        margin,
+        mask,
         ax[2],
-        "Margin binary mask from foreground sound after masking",
+        "Ground truth Region of Interest binary mask",
         hop_length,
         sample_rate,
     )
     fig.colorbar(colorbar, ax=ax[2], fraction=0.05)
+
+    margin = margin * 100 - 80
+    _ = add_db(
+        margin,
+        ax[3],
+        "Region of Interest binary mask margin",
+        hop_length,
+        sample_rate,
+    )
+    fig.colorbar(colorbar, ax=ax[3], fraction=0.05)
 
     for ax_i in ax:
         ax_i.label_outer()

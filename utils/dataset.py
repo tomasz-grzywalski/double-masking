@@ -9,7 +9,7 @@ import librosa
 
 from utils.recordings import TRAINING_LENGTH, SAMPLE_RATE, get_background, mixin
 from utils.cirm import generate_mask, apply_mask
-from utils.visualizations import visualize_fgnd
+from utils.visualizations import visualize_mix
 
 BACKGROUND_DIR, FOREGROUND_DIR = "Background", "Foreground"
 MAX_FFBF_ID = 51598
@@ -252,8 +252,8 @@ class Dataset:
         )
 
         if VISUALIZE_DATASET:
-            visualize_fgnd(
-                complex_fgnd_after_mask, mask, margin, HOP_LENGTH, SAMPLE_RATE
+            visualize_mix(
+                complex_mix, complex_fgnd_after_mask, mask, margin, HOP_LENGTH, SAMPLE_RATE
             )
 
         weights = 1.0 - margin

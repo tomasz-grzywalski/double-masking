@@ -60,6 +60,8 @@ To use:
      Directory containing trained model weights.
    * `--out_dir`  
      Output directory for wave files and visualizations.
+   * `--roi_thd`
+     Threshold value for the ROI mask. Should be between 0.0 and 1.0. Default 0.5.
    * `--visualize`  
      Add this flag to enable visualization generation.
 

@@ -64,7 +64,7 @@ def reconstruct_and_save_wave(stft, idx, name, out_dir):
 
 
 def reconstruct_and_visualize(
-    orig_mask, mixed_stft, reconst_mask, idx, out_dir, visualize
+    orig_mask, mixed_stft, reconst_mask, idx, out_dir, roi_thd, visualize
 ):
     y_true_mask_real = orig_mask[:, :, 2]
     y_true_mask_imag = orig_mask[:, :, 3]
@@ -91,7 +91,7 @@ def reconstruct_and_visualize(
     reconst_mask_real = reconst_mask[:, :, 1]
     reconst_mask_imag = reconst_mask[:, :, 2]
 
-    reconst_mask_bin = (reconst_mask_bin >= 0.5) * 1.0
+    reconst_mask_bin = (reconst_mask_bin >= roi_thd) * 1.0
     reconst_mask_real *= reconst_mask_bin
     reconst_mask_imag *= reconst_mask_bin
     del reconst_mask
@@ -140,6 +140,7 @@ def parse_args():
     )
     parser.add_argument("--model_dir", type=str, required=True)
     parser.add_argument("--out_dir", type=str, required=True)
+    parser.add_argument("--roi_thd", type=float, default=0.5)
     parser.add_argument("--visualize", action="store_true")
 
     return parser.parse_args()
@@ -164,6 +165,7 @@ def main():
             y_pred,
             test_sample_idx,
             args.out_dir,
+            args.roi_thd,
             args.visualize,
         )
 
